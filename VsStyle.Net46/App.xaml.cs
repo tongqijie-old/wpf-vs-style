@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace VsStyle.Net46
 {
@@ -19,6 +20,7 @@ namespace VsStyle.Net46
             var window = this.MainWindow as MainWindow;
             if (window != null)
             {
+                window.LogoImage.Source = new BitmapImage(new Uri("Assets/Images/icon.vs.png", UriKind.RelativeOrAbsolute));
                 window.Resources["BorderThemeColor"] = new SolidColorBrush(Color.FromArgb(0xFF, 0xCA, 0x51, 0x00));
             }
 
@@ -30,6 +32,7 @@ namespace VsStyle.Net46
             var window = this.MainWindow as MainWindow;
             if(window != null)
             {
+                window.LogoImage.Source = new BitmapImage(new Uri("Assets/Images/icon.vs.gray.png", UriKind.RelativeOrAbsolute));
                 window.Resources["BorderThemeColor"] = new SolidColorBrush(Color.FromArgb(0xFF, 0x3C, 0x40, 0x47));
             }
 

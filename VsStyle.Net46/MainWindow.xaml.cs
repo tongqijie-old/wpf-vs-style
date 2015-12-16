@@ -26,158 +26,219 @@ namespace VsStyle.Net46
             InitializeComponent();
         }
 
-    private void WindowBorderDragDelta(object sender, DragDeltaEventArgs e)
-    {
-        var source = e.Source as System.Windows.Controls.Primitives.Thumb;
-        if (source == null) { return; }
+        private void WindowBorderDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            var source = e.Source as System.Windows.Controls.Primitives.Thumb;
+            if (source == null) { return; }
 
-        var row = Grid.GetRow(source.Parent as UIElement);
-        var column = Grid.GetColumn(source.Parent as UIElement);
+            var row = Grid.GetRow(source.Parent as UIElement);
+            var column = Grid.GetColumn(source.Parent as UIElement);
 
-        if (row == 0 && column == 0)
-        {
-            // Left Top 
-            if (this.Width - e.HorizontalChange < this.MinWidth)
+            if (row == 0 && column == 0)
             {
-                this.Width = this.MinWidth;
-                this.Left += this.Width - this.MinWidth;
+                // Left Top 
+                if (this.Width - e.HorizontalChange < this.MinWidth)
+                {
+                    this.Width = this.MinWidth;
+                    this.Left += this.Width - this.MinWidth;
+                }
+                else
+                {
+                    this.Width -= e.HorizontalChange;
+                    this.Left += e.HorizontalChange;
+                }
+
+                if (this.Height - e.VerticalChange < this.MinHeight)
+                {
+                    this.Height = this.MinHeight;
+                    this.Top += this.Height - this.MinHeight;
+                }
+                else
+                {
+                    this.Height -= e.VerticalChange;
+                    this.Top += e.VerticalChange;
+                }
+            }
+            else if (row == 0 && column == 1)
+            {
+                // Top
+                if (this.Height - e.VerticalChange < this.MinHeight)
+                {
+                    this.Height = this.MinHeight;
+                    this.Top += this.Height - this.MinHeight;
+                }
+                else
+                {
+                    this.Height -= e.VerticalChange;
+                    this.Top += e.VerticalChange;
+                }
+            }
+            else if (row == 0 && column == 2)
+            {
+                // Top Right
+                if (this.Height - e.VerticalChange < this.MinHeight)
+                {
+                    this.Height = this.MinHeight;
+                    this.Top += this.Height - this.MinHeight;
+                }
+                else
+                {
+                    this.Height -= e.VerticalChange;
+                    this.Top += e.VerticalChange;
+                }
+
+                if (this.Width + e.HorizontalChange < this.MinWidth)
+                {
+                    this.Width = this.MinWidth;
+                }
+                else
+                {
+                    this.Width += e.HorizontalChange;
+                }
+            }
+            else if (row == 1 && column == 0)
+            {
+                // Left
+                if (this.Width - e.HorizontalChange < this.MinWidth)
+                {
+                    this.Width = this.MinWidth;
+                    this.Left += this.Width - this.MinWidth;
+                }
+                else
+                {
+                    this.Width -= e.HorizontalChange;
+                    this.Left += e.HorizontalChange;
+                }
+            }
+            else if (row == 1 && column == 2)
+            {
+                // Right
+                if (this.Width + e.HorizontalChange < this.MinWidth)
+                {
+                    this.Width = this.MinWidth;
+                }
+                else
+                {
+                    this.Width += e.HorizontalChange;
+                }
+            }
+            else if (row == 2 && column == 0)
+            {
+                // Left Bottom
+                if (this.Width - e.HorizontalChange < this.MinWidth)
+                {
+                    this.Width = this.MinWidth;
+                    this.Left += this.Width - this.MinWidth;
+                }
+                else
+                {
+                    this.Width -= e.HorizontalChange;
+                    this.Left += e.HorizontalChange;
+                }
+
+                if (this.Height + e.VerticalChange < this.MinHeight)
+                {
+                    this.Height = this.MinHeight;
+                }
+                else
+                {
+                    this.Height += e.VerticalChange;
+                }
+            }
+            else if (row == 2 && column == 1)
+            {
+                // Bottom
+                if (this.Height + e.VerticalChange < this.MinHeight)
+                {
+                    this.Height = this.MinHeight;
+                }
+                else
+                {
+                    this.Height += e.VerticalChange;
+                }
+            }
+            else if (row == 2 && column == 2)
+            {
+                // Right Bottom
+                if (this.Width + e.HorizontalChange < this.MinWidth)
+                {
+                    this.Width = this.MinWidth;
+                }
+                else
+                {
+                    this.Width += e.HorizontalChange;
+                }
+
+                if (this.Height + e.VerticalChange < this.MinHeight)
+                {
+                    this.Height = this.MinHeight;
+                }
+                else
+                {
+                    this.Height += e.VerticalChange;
+                }
+            }
+        }
+
+        private DateTime MouseDownTimeOnTitleBar { get; set; }
+
+        private void MouseDownOnTitleBar(object sender, MouseButtonEventArgs e)
+        {
+            if ((DateTime.Now - MouseDownTimeOnTitleBar) < TimeSpan.FromSeconds(0.5))
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    WindowState = WindowState.Normal;
+                }
+                else
+                {
+                    WindowState = WindowState.Maximized;
+                }
+                return;
             }
             else
             {
-                this.Width -= e.HorizontalChange;
-                this.Left += e.HorizontalChange;
+                MouseDownTimeOnTitleBar = DateTime.Now;
             }
 
-            if (this.Height - e.VerticalChange < this.MinHeight)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                this.Height = this.MinHeight;
-                this.Top += this.Height - this.MinHeight;
-            }
-            else
-            {
-                this.Height -= e.VerticalChange;
-                this.Top += e.VerticalChange;
+                this.DragMove();
             }
         }
-        else if(row == 0 && column == 1)
-        {
-            // Top
-            if (this.Height - e.VerticalChange < this.MinHeight)
-            {
-                this.Height = this.MinHeight;
-                this.Top += this.Height - this.MinHeight;
-            }
-            else
-            {
-                this.Height -= e.VerticalChange;
-                this.Top += e.VerticalChange;
-            }
-        }
-        else if(row == 0 && column == 2)
-        {
-            // Top Right
-            if (this.Height - e.VerticalChange < this.MinHeight)
-            {
-                this.Height = this.MinHeight;
-                this.Top += this.Height - this.MinHeight;
-            }
-            else
-            {
-                this.Height -= e.VerticalChange;
-                this.Top += e.VerticalChange;
-            }
 
-            if (this.Width + e.HorizontalChange < this.MinWidth)
+        private void WindowStateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
             {
-                this.Width = this.MinWidth;
+                MaximizeButtonImage.Source = new BitmapImage(new Uri("Assets/Images/icon.restore.png", UriKind.RelativeOrAbsolute));
             }
-            else
+            else if (WindowState == WindowState.Normal)
             {
-                this.Width += e.HorizontalChange;
+                MaximizeButtonImage.Source = new BitmapImage(new Uri("Assets/Images/icon.maximize.png", UriKind.RelativeOrAbsolute));
             }
         }
-        else if(row == 1 && column == 0)
-        {
-            // Left
-            if (this.Width - e.HorizontalChange < this.MinWidth)
-            {
-                this.Width = this.MinWidth;
-                this.Left += this.Width - this.MinWidth;
-            }
-            else
-            {
-                this.Width -= e.HorizontalChange;
-                this.Left += e.HorizontalChange;
-            }
-        }
-        else if(row == 1 && column == 2)
-        {
-            // Right
-            if (this.Width + e.HorizontalChange < this.MinWidth)
-            {
-                this.Width = this.MinWidth;
-            }
-            else
-            {
-                this.Width += e.HorizontalChange;
-            }
-        }
-        else if(row == 2 && column == 0)
-        {
-            // Left Bottom
-            if (this.Width - e.HorizontalChange < this.MinWidth)
-            {
-                this.Width = this.MinWidth;
-                this.Left += this.Width - this.MinWidth;
-            }
-            else
-            {
-                this.Width -= e.HorizontalChange;
-                this.Left += e.HorizontalChange;
-            }
 
-            if (this.Height + e.VerticalChange < this.MinHeight)
-            {
-                this.Height = this.MinHeight;
-            }
-            else
-            {
-                this.Height += e.VerticalChange;
-            }
-        }
-        else if(row == 2 && column == 1)
+        private void MinimizeButtonClick(object sender, RoutedEventArgs e)
         {
-            // Bottom
-            if (this.Height + e.VerticalChange < this.MinHeight)
-            {
-                this.Height = this.MinHeight;
-            }
-            else
-            {
-                this.Height += e.VerticalChange;
-            }
+            WindowState = WindowState.Minimized;
         }
-        else if(row == 2 && column == 2)
-        {
-            // Right Bottom
-            if (this.Width + e.HorizontalChange < this.MinWidth)
-            {
-                this.Width = this.MinWidth;
-            }
-            else
-            {
-                this.Width += e.HorizontalChange;
-            }
 
-            if (this.Height + e.VerticalChange < this.MinHeight)
+        private void MaximizeButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
             {
-                this.Height = this.MinHeight;
+                WindowState = WindowState.Normal;
             }
-            else
+            else if (WindowState == WindowState.Normal)
             {
-                this.Height += e.VerticalChange;
+                WindowState = WindowState.Maximized;
             }
         }
-    }
+
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

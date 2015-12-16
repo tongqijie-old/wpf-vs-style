@@ -5,7 +5,8 @@
         xmlns:converters="clr-namespace:VsStyle.Converters"
         xmlns:models="clr-namespace:VsStyle.Models"
         xmlns:data="clr-namespace:VsStyle.Data"
-        AllowsTransparency="True" WindowStyle="None" Background="Transparent">
+        AllowsTransparency="True" WindowStyle="None" Background="Transparent"
+        StateChanged="WindowStateChanged">
 
     <Window.Resources>
         <!-- Window Border Color -->
@@ -226,6 +227,43 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Button Style -->
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" 
+                                              Focusable="False" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              RecognizesAccessKey="True" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#FF3E3E40"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#FF007ACC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -241,14 +279,58 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="1" Grid.Column="1"
-            Background="#FF2D2D30">
+              Background="#FF2D2D30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition />
                 <RowDefinition Height="22"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1" Margin="0,0,0,8">
+            <Grid Grid.Row="0"
+                  MouseDown="MouseDownOnTitleBar">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Grid.Column="0" Margin="4"
+                       x:Name="LogoImage"
+                       Source="Assets/Images/icon.vs.png" Stretch="UniformToFill">
+                </Image>
+
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" 
+                           Foreground="#FF7D7D7D" FontSize="13">
+                    wpf-vs-style - Microsoft Visual Studio
+                </TextBlock>
+
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal">
+                    <Button Style="{StaticResource ButtonStyle}"
+                            Height="28" VerticalAlignment="Top"
+                            Click="MinimizeButtonClick">
+                        <Image Source="Assets/Images/icon.minimize.png" Stretch="UniformToFill"></Image>
+                    </Button>
+                    <Button Style="{StaticResource ButtonStyle}"
+                            Height="28" VerticalAlignment="Top"
+                            Click="MaximizeButtonClick">
+                        <Image Source="Assets/Images/icon.maximize.png" Stretch="UniformToFill"
+                               x:Name="MaximizeButtonImage"></Image>
+                    </Button>
+                    <Button Style="{StaticResource ButtonStyle}"
+                            Height="28" VerticalAlignment="Top"
+                            Click="CloseButtonClick">
+                        <Image Source="Assets/Images/icon.close.png" Stretch="UniformToFill"></Image>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="0,0,0,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="auto"/>
@@ -290,6 +372,12 @@
                         </Border>
                     </Grid>
                 </Border>
+            </Grid>
+
+            <Grid Grid.Row="3" Background="{StaticResource BorderThemeColor}">
+                <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="4,0,0,0">
+                    Ready
+                </TextBlock>
             </Grid>
         </Grid>
 
