@@ -228,8 +228,8 @@
             </Setter>
         </Style>
 
-        <!-- Button Style -->
-        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+        <!-- Button Style in Catption Bar -->
+        <Style x:Key="CaptionBarButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -264,6 +264,153 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Button Style in Tab Item -->
+        <Style x:Key="TabItemButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" 
+                                              Focusable="False" 
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              Margin="{TemplateBinding Padding}" 
+                                              RecognizesAccessKey="True" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#20FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#20000000"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- TabControl Style -->
+        <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border>
+                                <TabPanel IsItemsHost="True" />
+                            </Border>
+                            <Border x:Name="content" Grid.Row="1" Background="#FF1E1E1E" BorderThickness="0,2,0,0" BorderBrush="#FF007ACC" >
+                                <ContentPresenter ContentSource="SelectedContent" Name="PART_SelectedContentHost"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter TargetName="content" Property="Background" Value="Transparent"/>
+                                <Setter TargetName="content" Property="BorderBrush" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Border Name="bd" Background="{TemplateBinding Background}" Height="22"
+                                            Padding="6,0,2,0">
+                                        <Border.Resources>
+                                            <converters:Boolean2ObjectConverter x:Key="ImageRotateAngleConverter">
+                                                <converters:Boolean2ObjectConverter.ValueIfTrue>
+                                                    <sys:Double>-90</sys:Double>
+                                                </converters:Boolean2ObjectConverter.ValueIfTrue>
+                                                <converters:Boolean2ObjectConverter.ValueIfFalse>
+                                                    <sys:Double>0</sys:Double>
+                                                </converters:Boolean2ObjectConverter.ValueIfFalse>
+                                            </converters:Boolean2ObjectConverter>
+                                            <converters:Boolean2ObjectConverter x:Key="ButtonOpacityConverter">
+                                                <converters:Boolean2ObjectConverter.ValueIfTrue>
+                                                    <sys:Double>1</sys:Double>
+                                                </converters:Boolean2ObjectConverter.ValueIfTrue>
+                                                <converters:Boolean2ObjectConverter.ValueIfFalse>
+                                                    <sys:Double>0</sys:Double>
+                                                </converters:Boolean2ObjectConverter.ValueIfFalse>
+                                            </converters:Boolean2ObjectConverter>
+                                        </Border.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ContentPresenter Grid.Column="0" ContentSource="Header" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                            <Button Style="{StaticResource TabItemButtonStyle}"
+                                                    x:Name="dock" Opacity="{Binding IsPinned, Converter={StaticResource ButtonOpacityConverter}}"
+                                                    VerticalAlignment="Center" Width="18" Height="18"
+                                                    Click="DockTabItemButtonClick" Tag="{Binding}">
+                                                <Image Source="Assets/Images/icon.dock.19x19.png" Stretch="Uniform" 
+                                                       Height="13" Width="13">
+                                                    <Image.LayoutTransform>
+                                                        <RotateTransform Angle="{Binding IsPinned, Converter={StaticResource ImageRotateAngleConverter}}"></RotateTransform>
+                                                    </Image.LayoutTransform>
+                                                </Image>
+                                            </Button>
+                                            <Button Style="{StaticResource TabItemButtonStyle}"
+                                                    x:Name="close" Opacity="0"
+                                                    VerticalAlignment="Center" Width="18" Height="18" Margin="2,0,0,0"
+                                                    Click="CloseTabItemButtonClick" Tag="{Binding}">
+                                                <Image Source="Assets/Images/icon.close.19x19.png" Stretch="Uniform" 
+                                                       Height="13" Width="13"></Image>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                                <Condition Property="IsSelected" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="bd" Property="Background" Value="#FF1C97EA"/>
+                                            <Setter TargetName="dock" Property="Opacity" Value="1"/>
+                                            <Setter TargetName="close" Property="Opacity" Value="1"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="bd" Property="Background" Value="#FF007ACC"/>
+                                        </MultiTrigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="bd" Property="Background" Value="#FF007ACC"/>
+                                            <Setter TargetName="dock" Property="Opacity" Value="1"/>
+                                            <Setter TargetName="close" Property="Opacity" Value="1"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -287,6 +434,7 @@
                 <RowDefinition Height="22"/>
             </Grid.RowDefinitions>
 
+            <!-- 标题栏 -->
             <Grid Grid.Row="0"
                   MouseDown="MouseDownOnTitleBar">
                 <Grid.ColumnDefinitions>
@@ -307,18 +455,18 @@
 
                 <StackPanel Grid.Column="2" 
                             Orientation="Horizontal">
-                    <Button Style="{StaticResource ButtonStyle}"
+                    <Button Style="{StaticResource CaptionBarButtonStyle}"
                             Height="28" VerticalAlignment="Top"
                             Click="MinimizeButtonClick">
                         <Image Source="Assets/Images/icon.minimize.png" Stretch="UniformToFill"></Image>
                     </Button>
-                    <Button Style="{StaticResource ButtonStyle}"
+                    <Button Style="{StaticResource CaptionBarButtonStyle}"
                             Height="28" VerticalAlignment="Top"
                             Click="MaximizeButtonClick">
                         <Image Source="Assets/Images/icon.maximize.png" Stretch="UniformToFill"
                                x:Name="MaximizeButtonImage"></Image>
                     </Button>
-                    <Button Style="{StaticResource ButtonStyle}"
+                    <Button Style="{StaticResource CaptionBarButtonStyle}"
                             Height="28" VerticalAlignment="Top"
                             Click="CloseButtonClick">
                         <Image Source="Assets/Images/icon.close.png" Stretch="UniformToFill"></Image>
@@ -326,19 +474,26 @@
                 </StackPanel>
             </Grid>
 
+            <!-- 菜单栏 -->
             <Grid Grid.Row="1">
 
             </Grid>
 
-            <Grid Grid.Row="2" Margin="0,0,0,8">
+            <!-- 内容界面 -->
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition />
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="1" Width="250"
-                    BorderThickness="1" BorderBrush="#FF3F3F46">
+                <!-- 左停靠窗口 -->
+                <Border Grid.Row="0" Grid.Column="0" Width="250"
+                        BorderThickness="1" BorderBrush="#FF3F3F46">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24"/>
@@ -351,12 +506,12 @@
                         </Border>
 
                         <Border Grid.Row="3"
-                            Background="#FF252526"
-                            BorderThickness="0,1,0,0" BorderBrush="#FF3F3F46">
+                                Background="#FF252526"
+                                BorderThickness="0,1,0,0" BorderBrush="#FF3F3F46">
                             <TreeView ItemsSource="{Binding Source={x:Static data:SolutionExplorer.Explorer}, Path=RootNodes}" 
-                                    BorderThickness="0" 
-                                    Margin="0,4,0,0"
-                                    HorizontalContentAlignment="Stretch">
+                                      BorderThickness="0" 
+                                      Margin="0,4,0,0"
+                                      HorizontalContentAlignment="Stretch">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding ChildNodes}">
                                         <StackPanel Height="20" Tag="{Binding}" Background="Transparent"
@@ -372,8 +527,16 @@
                         </Border>
                     </Grid>
                 </Border>
+
+                <!-- 主内容 -->
+                <Border Grid.Row="0" Grid.Column="1">
+                    <TabControl ItemsSource="{Binding Source={x:Static data:ContentManager.Manager}, Path=TabItems}"
+                                SelectedItem="{Binding Source={x:Static data:ContentManager.Manager}, Path=SelectedTabItem}">
+                    </TabControl>
+                </Border>
             </Grid>
 
+            <!-- 状态栏 -->
             <Grid Grid.Row="3" Background="{StaticResource BorderThemeColor}">
                 <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="4,0,0,0">
                     Ready

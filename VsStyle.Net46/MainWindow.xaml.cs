@@ -24,6 +24,8 @@ namespace VsStyle.Net46
         public MainWindow()
         {
             InitializeComponent();
+
+           
         }
 
         private void WindowBorderDragDelta(object sender, DragDeltaEventArgs e)
@@ -239,6 +241,31 @@ namespace VsStyle.Net46
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void CloseTabItemButtonClick(object sender, RoutedEventArgs e)
+        {
+            var tabItem = (sender as FrameworkElement).Tag as Models.TabItem;
+            if(tabItem != null)
+            {
+                Data.ContentManager.Manager.TabItems.Remove(tabItem);
+            }
+        }
+
+        private void DockTabItemButtonClick(object sender, RoutedEventArgs e)
+        {
+            var tabItem = (sender as FrameworkElement).Tag as Models.TabItem;
+            if(tabItem != null)
+            {
+                if(tabItem.IsPinned)
+                {
+                    Data.ContentManager.Manager.Unpin(tabItem);
+                }
+                else
+                {
+                    Data.ContentManager.Manager.Pin(tabItem);
+                }
+            }
         }
     }
 }
