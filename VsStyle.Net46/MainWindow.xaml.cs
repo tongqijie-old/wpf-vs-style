@@ -24,8 +24,6 @@ namespace VsStyle.Net46
         public MainWindow()
         {
             InitializeComponent();
-
-           
         }
 
         private void WindowBorderDragDelta(object sender, DragDeltaEventArgs e)
@@ -184,7 +182,7 @@ namespace VsStyle.Net46
 
         private DateTime MouseDownTimeOnTitleBar { get; set; }
 
-        private void MouseDownOnTitleBar(object sender, MouseButtonEventArgs e)
+        private void MouseDownOnCaptionBar(object sender, MouseButtonEventArgs e)
         {
             if ((DateTime.Now - MouseDownTimeOnTitleBar) < TimeSpan.FromSeconds(0.5))
             {
@@ -264,6 +262,49 @@ namespace VsStyle.Net46
                 else
                 {
                     Data.ContentManager.Manager.Pin(tabItem);
+                }
+            }
+        }
+
+        private object MouseDownObject { get; set; }
+
+        private void MouseDownOnTabItem(object sender, MouseButtonEventArgs e)
+        {
+            MouseDownObject = sender;
+        }
+
+        private void MouseLeaveOnTabItem(object sender, MouseEventArgs e)
+        {
+            if(sender == MouseDownObject)
+            {
+                var tabItem = (sender as FrameworkElement).Tag as Models.TabItem;
+                if (tabItem != null)
+                {
+                    if (e.LeftButton == MouseButtonState.Pressed)
+                    {
+                        var point = e.GetPosition(tabItem);
+
+                        if (point.X < 0 && point.Y < tabItem.ActualHeight && point.Y > 0)
+                        {
+                            Data.ContentManager.Manager.MoveLeft(tabItem);
+                        }
+                        else if (point.X > tabItem.ActualWidth && point.Y < tabItem.ActualHeight && point.Y > 0)
+                        {
+                            Data.ContentManager.Manager.MoveRight(tabItem);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void TabControlComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                var tabItem = e.AddedItems[0] as Models.TabItem;
+                if(tabItem != null)
+                {
+                    Data.ContentManager.Manager.SelectedTabItem = tabItem;
                 }
             }
         }

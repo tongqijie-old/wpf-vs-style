@@ -33,18 +33,18 @@
         </LinearGradientBrush>
 
         <!-- TreeView Style -->
-        <Style x:Key="{x:Type TreeView}" TargetType="TreeView">
+        <Style x:Key="{x:Type TreeView}" TargetType="{x:Type TreeView}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TreeView">
-                        <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <ControlTemplate TargetType="{x:Type TreeView}">
+                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                             <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false"
-                                          HorizontalScrollBarVisibility="auto"
-                                          VerticalScrollBarVisibility="Auto">
+        						HorizontalScrollBarVisibility="auto"
+        						VerticalScrollBarVisibility="Auto">
                                 <ScrollViewer.Template>
                                     <ControlTemplate TargetType="{x:Type ScrollViewer}">
                                         <Grid>
@@ -58,29 +58,28 @@
                                             </Grid.ColumnDefinitions>
 
                                             <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" 
-                                                                    Grid.Row="0" Grid.Column="0"
-                                                                    CanContentScroll="{TemplateBinding CanContentScroll}" />
+        										Grid.Row="0" Grid.Column="0"
+        										CanContentScroll="{TemplateBinding CanContentScroll}" />
 
                                             <!-- 垂直滚动条 -->
                                             <ScrollBar x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right"
-                                                       Grid.Row="0" Grid.Column="1"
-                                                       Maximum="{TemplateBinding ScrollableHeight}"
-                                                       Orientation="Vertical"
-                                                       ViewportSize="{TemplateBinding ViewportHeight}"
-                                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+        										Grid.Row="0" Grid.Column="1"
+        										Maximum="{TemplateBinding ScrollableHeight}"
+        										Orientation="Vertical"
+        										ViewportSize="{TemplateBinding ViewportHeight}"
+        										Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+        										Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
 
                                             <!-- 水平滚动条 -->
                                             <ScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom"
-                                                       Grid.Row="1" Grid.Column="0"
-                                                       Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal"
-                                                       ViewportSize="{TemplateBinding ViewportWidth}"
-                                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+        										Grid.Row="1" Grid.Column="0"
+        										Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal"
+        										ViewportSize="{TemplateBinding ViewportWidth}"
+        										Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+        										Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
 
                                             <Grid Grid.Row="1" Grid.Column="1"
-                                                  Background="#FF3E3E42">
-                                            </Grid>
+        										Background="#FF3E3E42"/>
                                         </Grid>
                                     </ControlTemplate>
                                 </ScrollViewer.Template>
@@ -94,8 +93,8 @@
                 <Setter.Value>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                        <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
                         <Setter Property="Padding" Value="1,0,0,0"/>
                         <Setter Property="Foreground" Value="White"/>
                         <Setter Property="FocusVisualStyle">
@@ -122,7 +121,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <Border Name="Bd" Background="{TemplateBinding Background}" BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderThickness="0" Padding="{TemplateBinding Padding}">
                                             <Border.Resources>
                                                 <converters:TreeNodeLevel2LeadingConverter x:Key="TreeNodeLevel2LeadingConverter"/>
                                                 <converters:Boolean2VisibilityConverter Inverse="True" x:Key="HideArrowConverter"/>
@@ -133,23 +132,23 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <ToggleButton x:Name="Expander" 
-                                                              Visibility="{Binding IsHideArrow, Converter={StaticResource HideArrowConverter}}"
-                                                              ClickMode="Press" 
-                                                              HorizontalAlignment="Left" 
-                                                              IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+        											Visibility="{Binding IsHideArrow, Converter={StaticResource HideArrowConverter}}"
+        											ClickMode="Press" 
+        											HorizontalAlignment="Left" 
+        											IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
                                                     <ToggleButton.Style>
                                                         <Style TargetType="{x:Type ToggleButton}">
                                                             <Setter Property="Focusable" Value="False"/>
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
-                                                                    <ControlTemplate TargetType="ToggleButton">
+                                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
                                                                         <Border Width="12" Height="12">
                                                                             <Path x:Name="ExpandPath"
-                                                                                  HorizontalAlignment="Right" 
-                                                                                  VerticalAlignment="Center" 
-                                                                                  Fill="Transparent"
-                                                                                  Stroke="#FFE6E6E6" 
-                                                                                  Data="M 2 2 L 6 6 L 2 10 Z"/>
+        																		HorizontalAlignment="Right" 
+        																		VerticalAlignment="Center" 
+        																		Fill="Transparent"
+        																		Stroke="#FFE6E6E6" 
+        																		Data="M 2 2 L 6 6 L 2 10 Z"/>
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
                                                                             <MultiTrigger>
@@ -180,7 +179,7 @@
                                                     </ToggleButton.Style>
                                                 </ToggleButton>
                                                 <ContentPresenter Grid.Column="1" Margin="13,0,0,0" x:Name="PART_Header" ContentSource="Header"
-                                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+        											HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                                             </Grid>
                                         </Border>
                                         <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"/>
@@ -240,17 +239,17 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" 
-                                SnapsToDevicePixels="true">
+        					BorderBrush="{TemplateBinding BorderBrush}" 
+        					BorderThickness="{TemplateBinding BorderThickness}" 
+        					Background="{TemplateBinding Background}" 
+        					SnapsToDevicePixels="true">
                             <ContentPresenter x:Name="contentPresenter" 
-                                              Focusable="False" 
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              Margin="{TemplateBinding Padding}" 
-                                              RecognizesAccessKey="True" 
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        						Focusable="False" 
+        						HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+        						Margin="{TemplateBinding Padding}" 
+        						RecognizesAccessKey="True" 
+        						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+        						VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -277,17 +276,17 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border x:Name="border" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" 
-                                SnapsToDevicePixels="true">
+        					BorderBrush="{TemplateBinding BorderBrush}" 
+        					BorderThickness="{TemplateBinding BorderThickness}" 
+        					Background="{TemplateBinding Background}" 
+        					SnapsToDevicePixels="true">
                             <ContentPresenter x:Name="contentPresenter" 
-                                              Focusable="False" 
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              Margin="{TemplateBinding Padding}" 
-                                              RecognizesAccessKey="True" 
-                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        						Focusable="False" 
+        						HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+        						Margin="{TemplateBinding Padding}" 
+        						RecognizesAccessKey="True" 
+        						SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+        						VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -298,6 +297,122 @@
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ComboBox in TabControl -->
+        <Style x:Key="TabControlComboBoxStyle" TargetType="{x:Type ComboBox}">
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                            <Popup x:Name="PART_Popup" 
+                                   AllowsTransparency="true"
+                                   IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   Margin="1" 
+                                   PopupAnimation="Slide"
+                                   Placement="Bottom">
+                                <Border x:Name="dropDownBorder" 
+                                        BorderBrush="#FF313131" 
+                                        BorderThickness="1" 
+                                        Background="#FF1B1B1B">
+                                    <ScrollViewer x:Name="DropDownScrollViewer">
+                                        <Grid x:Name="grid"
+                                              RenderOptions.ClearTypeHint="Enabled"
+                                              Margin="1">
+                                            <ItemsPresenter x:Name="ItemsPresenter"
+                                                            KeyboardNavigation.DirectionalNavigation="Contained" 
+                                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+
+                            <ToggleButton x:Name="toggleButton"
+                                          Width="15"
+                                          Height="15"
+                                          BorderThickness="0"
+                                          Background="Transparent"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Style>
+                                    <Style TargetType="{x:Type ToggleButton}">
+                                        <Setter Property="OverridesDefaultStyle" Value="true"/>
+                                        <Setter Property="IsTabStop" Value="false"/>
+                                        <Setter Property="Focusable" Value="false"/>
+                                        <Setter Property="ClickMode" Value="Press"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                    <Border x:Name="templateRoot" 
+                                                            SnapsToDevicePixels="true" 
+                                                            Background="Transparent" 
+                                                            BorderThickness="0">
+                                                        <Path x:Name="arrow" 
+                                                              VerticalAlignment="Center"
+                                                              HorizontalAlignment="Center" 
+                                                              Fill="White" 
+                                                              Data="M 0,0 L 8,0 L 4,4 Z"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <MultiTrigger>
+                                                            <MultiTrigger.Conditions>
+                                                                <Condition Property="IsMouseOver" Value="true"/>
+                                                                <Condition Property="IsChecked" Value="false"/>
+                                                            </MultiTrigger.Conditions>
+                                                            <Setter TargetName="templateRoot" Property="Background" Value="#20FFFFFF"/>
+                                                            <Setter TargetName="arrow" Property="Fill" Value="#FF007ACC"/>
+                                                        </MultiTrigger>
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter TargetName="templateRoot" Property="Background" Value="#FF007BC7"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ToggleButton.Style>
+                            </ToggleButton>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ComboBoxItem}">
+                        <Setter Property="SnapsToDevicePixels" Value="True"/>
+                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Padding" Value="4,3"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                                    <Border x:Name="Bd" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                            Background="{TemplateBinding Background}" 
+                                            Padding="{TemplateBinding Padding}" 
+                                            SnapsToDevicePixels="true">
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#FF333333"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -313,11 +428,35 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Border>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Grid.Row="0">
                                 <TabPanel IsItemsHost="True" />
                             </Border>
-                            <Border x:Name="content" Grid.Row="1" Background="#FF1E1E1E" BorderThickness="0,2,0,0" BorderBrush="#FF007ACC" >
-                                <ContentPresenter ContentSource="SelectedContent" Name="PART_SelectedContentHost"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                                      Margin="0,0,2,0"
+                                      ItemsSource="{TemplateBinding ItemsSource}"
+                                      Style="{StaticResource TabControlComboBoxStyle}"
+                                      SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectionChanged="TabControlComboBoxSelectionChanged">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" MinWidth="180">
+                                            <Image Source="Assets/Images/icon.folder.dark.png" Stretch="Uniform"
+                                                   Height="16">
+                                            </Image>
+                                            <TextBlock Text="{Binding Header}" Margin="20,0,0,0"
+                                                       FontSize="13" FontWeight="Light" Foreground="White">
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Border x:Name="content" Grid.Row="1" Grid.ColumnSpan="2" 
+        						Background="#FF1E1E1E" BorderThickness="0,2,0,0" BorderBrush="#FF007ACC" >
+                                <ContentPresenter ContentSource="SelectedContent" x:Name="PART_SelectedContentHost"/>
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
@@ -339,8 +478,9 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
-                                    <Border Name="bd" Background="{TemplateBinding Background}" Height="22"
-                                            Padding="6,0,2,0">
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" Height="22"
+        								Padding="6,0,2,0"
+        								MouseDown="MouseDownOnTabItem" MouseLeave="MouseLeaveOnTabItem" Tag="{Binding}">
                                         <Border.Resources>
                                             <converters:Boolean2ObjectConverter x:Key="ImageRotateAngleConverter">
                                                 <converters:Boolean2ObjectConverter.ValueIfTrue>
@@ -362,22 +502,22 @@
                                         <StackPanel Orientation="Horizontal">
                                             <ContentPresenter Grid.Column="0" ContentSource="Header" VerticalAlignment="Center" Margin="0,0,8,0"/>
                                             <Button Style="{StaticResource TabItemButtonStyle}"
-                                                    x:Name="dock" Opacity="{Binding IsPinned, Converter={StaticResource ButtonOpacityConverter}}"
-                                                    VerticalAlignment="Center" Width="18" Height="18"
-                                                    Click="DockTabItemButtonClick" Tag="{Binding}">
+        										x:Name="dock" Opacity="{Binding IsPinned, Converter={StaticResource ButtonOpacityConverter}}"
+        										VerticalAlignment="Center" Width="18" Height="18"
+        										Click="DockTabItemButtonClick" Tag="{Binding}">
                                                 <Image Source="Assets/Images/icon.dock.19x19.png" Stretch="Uniform" 
-                                                       Height="13" Width="13">
+        											Height="13" Width="13">
                                                     <Image.LayoutTransform>
-                                                        <RotateTransform Angle="{Binding IsPinned, Converter={StaticResource ImageRotateAngleConverter}}"></RotateTransform>
+                                                        <RotateTransform Angle="{Binding IsPinned, Converter={StaticResource ImageRotateAngleConverter}}"/>
                                                     </Image.LayoutTransform>
                                                 </Image>
                                             </Button>
                                             <Button Style="{StaticResource TabItemButtonStyle}"
-                                                    x:Name="close" Opacity="0"
-                                                    VerticalAlignment="Center" Width="18" Height="18" Margin="2,0,0,0"
-                                                    Click="CloseTabItemButtonClick" Tag="{Binding}">
+        										x:Name="close" Opacity="0"
+        										VerticalAlignment="Center" Width="18" Height="18" Margin="2,0,0,0"
+        										Click="CloseTabItemButtonClick" Tag="{Binding}">
                                                 <Image Source="Assets/Images/icon.close.19x19.png" Stretch="Uniform" 
-                                                       Height="13" Width="13"></Image>
+        											Height="13" Width="13"/>
                                             </Button>
                                         </StackPanel>
                                     </Border>
@@ -411,6 +551,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
     </Window.Resources>
 
     <Grid>
@@ -426,7 +567,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="1" Grid.Column="1"
-              Background="#FF2D2D30">
+			  Background="#FF2D2D30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="34"/>
                 <RowDefinition Height="30"/>
@@ -436,7 +577,7 @@
 
             <!-- 标题栏 -->
             <Grid Grid.Row="0"
-                  MouseDown="MouseDownOnTitleBar">
+				  MouseDown="MouseDownOnCaptionBar">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition />
@@ -444,39 +585,35 @@
                 </Grid.ColumnDefinitions>
 
                 <Image Grid.Column="0" Margin="4"
-                       x:Name="LogoImage"
-                       Source="Assets/Images/icon.vs.png" Stretch="UniformToFill">
-                </Image>
+					   x:Name="LogoImage"
+					   Source="Assets/Images/icon.vs.png" Stretch="UniformToFill"/>
 
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" 
-                           Foreground="#FF7D7D7D" FontSize="13">
-                    wpf-vs-style - Microsoft Visual Studio
+                           Foreground="#FF7D7D7D" FontSize="13"><Run Text="wpf-vs-style - Microsoft Visual Studio"/>
                 </TextBlock>
 
                 <StackPanel Grid.Column="2" 
                             Orientation="Horizontal">
                     <Button Style="{StaticResource CaptionBarButtonStyle}"
-                            Height="28" VerticalAlignment="Top"
-                            Click="MinimizeButtonClick">
-                        <Image Source="Assets/Images/icon.minimize.png" Stretch="UniformToFill"></Image>
+						    Height="28" VerticalAlignment="Top"
+						    Click="MinimizeButtonClick">
+                        <Image Source="Assets/Images/icon.minimize.png" Stretch="UniformToFill"/>
                     </Button>
                     <Button Style="{StaticResource CaptionBarButtonStyle}"
-                            Height="28" VerticalAlignment="Top"
-                            Click="MaximizeButtonClick">
+						    Height="28" VerticalAlignment="Top"
+						    Click="MaximizeButtonClick">
                         <Image Source="Assets/Images/icon.maximize.png" Stretch="UniformToFill"
-                               x:Name="MaximizeButtonImage"></Image>
+							   x:Name="MaximizeButtonImage"/>
                     </Button>
                     <Button Style="{StaticResource CaptionBarButtonStyle}"
-                            Height="28" VerticalAlignment="Top"
-                            Click="CloseButtonClick">
-                        <Image Source="Assets/Images/icon.close.png" Stretch="UniformToFill"></Image>
+						    Height="28" VerticalAlignment="Top"
+						    Click="CloseButtonClick">
+                        <Image Source="Assets/Images/icon.close.png" Stretch="UniformToFill"/>
                     </Button>
                 </StackPanel>
             </Grid>
 
-            <!-- 菜单栏 -->
             <Grid Grid.Row="1">
-
             </Grid>
 
             <!-- 内容界面 -->
@@ -493,7 +630,7 @@
 
                 <!-- 左停靠窗口 -->
                 <Border Grid.Row="0" Grid.Column="0" Width="250"
-                        BorderThickness="1" BorderBrush="#FF3F3F46">
+					BorderThickness="1" BorderBrush="#FF3F3F46">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="24"/>
@@ -502,24 +639,23 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Border>
-                        </Border>
+                        <Border/>
 
                         <Border Grid.Row="3"
-                                Background="#FF252526"
-                                BorderThickness="0,1,0,0" BorderBrush="#FF3F3F46">
-                            <TreeView ItemsSource="{Binding Source={x:Static data:SolutionExplorer.Explorer}, Path=RootNodes}" 
-                                      BorderThickness="0" 
-                                      Margin="0,4,0,0"
-                                      HorizontalContentAlignment="Stretch">
+							Background="#FF252526"
+							BorderThickness="0,1,0,0" BorderBrush="#FF3F3F46">
+                            <TreeView ItemsSource="{Binding RootNodes, Source={x:Static data:SolutionExplorer.Explorer}}" 
+								BorderThickness="0" 
+								Margin="0,4,0,0"
+								HorizontalContentAlignment="Stretch">
                                 <TreeView.ItemTemplate>
                                     <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding ChildNodes}">
                                         <StackPanel Height="20" Tag="{Binding}" Background="Transparent"
-                                                Orientation="Horizontal">
+											Orientation="Horizontal">
                                             <Image Source="{Binding ImageUri}" Stretch="UniformToFill" Width="18" Height="18"/>
                                             <TextBlock Margin="6,0,0,0" 
-                                                    Text="{Binding Label}" VerticalAlignment="Center" FontSize="12"
-                                                    FontWeight="Light"/>
+												Text="{Binding Label}" VerticalAlignment="Center" FontSize="12"
+												FontWeight="Light"/>
                                         </StackPanel>
                                     </HierarchicalDataTemplate>
                                 </TreeView.ItemTemplate>
@@ -528,61 +664,58 @@
                     </Grid>
                 </Border>
 
-                <!-- 主内容 -->
+                <!-- 选项卡窗体 -->
                 <Border Grid.Row="0" Grid.Column="1">
-                    <TabControl ItemsSource="{Binding Source={x:Static data:ContentManager.Manager}, Path=TabItems}"
-                                SelectedItem="{Binding Source={x:Static data:ContentManager.Manager}, Path=SelectedTabItem}">
-                    </TabControl>
+                    <TabControl ItemsSource="{Binding TabItems, Source={x:Static data:ContentManager.Manager}}"
+						        SelectedItem="{Binding SelectedTabItem, Source={x:Static data:ContentManager.Manager}}"/>
                 </Border>
             </Grid>
 
             <!-- 状态栏 -->
             <Grid Grid.Row="3" Background="{StaticResource BorderThemeColor}">
-                <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="4,0,0,0">
-                    Ready
-                </TextBlock>
+                <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="4,0,0,0"><Run Text="Ready"/></TextBlock>
             </Grid>
         </Grid>
 
         <Border Grid.Row="1" Grid.Column="0" Margin="0,-1,0,-1"
-                BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BorderThemeColor}"
-                Background="{StaticResource LeftBorderGradientBrush}">
+			BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BorderThemeColor}"
+			Background="{StaticResource LeftBorderGradientBrush}">
             <Thumb Cursor="SizeWE" DragDelta="WindowBorderDragDelta"
-                   Margin="0,6,0,6"></Thumb>
+				Margin="0,6,0,6"/>
         </Border>
         <Border Grid.Row="1" Grid.Column="2" Margin="0,-1,0,-1"
-                BorderThickness="1,0,0,0" BorderBrush="{DynamicResource BorderThemeColor}"
-                Background="{StaticResource RightBorderGradientBrush}">
+			BorderThickness="1,0,0,0" BorderBrush="{DynamicResource BorderThemeColor}"
+			Background="{StaticResource RightBorderGradientBrush}">
             <Thumb Cursor="SizeWE" DragDelta="WindowBorderDragDelta"
-                   Margin="0,6,0,6"></Thumb>
+				Margin="0,6,0,6"/>
         </Border>
         <Border Grid.Row="0" Grid.Column="1" Margin="-1,0,-1,0"
-                BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderThemeColor}"
-                Background="{StaticResource TopBorderGradientBrush}">
+			BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderThemeColor}"
+			Background="{StaticResource TopBorderGradientBrush}">
             <Thumb Cursor="SizeNS" DragDelta="WindowBorderDragDelta"
-                   Margin="6,0,6,0"></Thumb>
+				Margin="6,0,6,0"/>
         </Border>
         <Border Grid.Row="2" Grid.Column="1" Margin="-1,0,-1,0"
-                BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderThemeColor}"
-                Background="{StaticResource BottomBorderGradientBrush}">
+			BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BorderThemeColor}"
+			Background="{StaticResource BottomBorderGradientBrush}">
             <Thumb Cursor="SizeNS" DragDelta="WindowBorderDragDelta"
-                   Margin="6,0,6,0"></Thumb>
+				Margin="6,0,6,0"/>
         </Border>
         <Border Grid.Row="0" Grid.Column="0">
             <Thumb Cursor="SizeNWSE" DragDelta="WindowBorderDragDelta"
-                   Margin="0,0,-5,-5"></Thumb>
+				Margin="0,0,-5,-5"/>
         </Border>
         <Border Grid.Row="2" Grid.Column="2">
             <Thumb Cursor="SizeNWSE" DragDelta="WindowBorderDragDelta"
-                   Margin="-5,-5,0,0"></Thumb>
+				Margin="-5,-5,0,0"/>
         </Border>
         <Border Grid.Row="0" Grid.Column="2">
             <Thumb Cursor="SizeNESW" DragDelta="WindowBorderDragDelta"
-                   Margin="-5,0,0,-5"></Thumb>
+				Margin="-5,0,0,-5"/>
         </Border>
         <Border Grid.Row="2" Grid.Column="0">
             <Thumb Cursor="SizeNESW" DragDelta="WindowBorderDragDelta"
-                   Margin="0,-5,-5,0"></Thumb>
+				Margin="0,-5,-5,0"/>
         </Border>
     </Grid>
 </Window>

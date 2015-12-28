@@ -88,5 +88,31 @@
                 }
             }
         }
+
+        public void MoveLeft(Models.TabItem tabItem)
+        {
+            if (!tabItem.IsPinned)
+            {
+                var index = TabItems.IndexOf(tabItem);
+                if (index > 0 && !TabItems[index - 1].IsPinned)
+                {
+                    TabItems.Remove(tabItem);
+                    TabItems.Insert(index - 1, tabItem);
+                }
+            }
+        }
+
+        public void MoveRight(Models.TabItem tabItem)
+        {
+            if (!tabItem.IsPinned)
+            {
+                var index = TabItems.IndexOf(tabItem);
+                if(index >= 0 && index < TabItems.Count - 1)
+                {
+                    TabItems.Remove(tabItem);
+                    TabItems.Insert(index + 1, tabItem);
+                }
+            }
+        }
     }
 }
