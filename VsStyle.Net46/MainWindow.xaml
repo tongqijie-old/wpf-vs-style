@@ -571,7 +571,7 @@
                             <ControlTemplate TargetType="{x:Type MenuItem}">
                                 <!--Border 1-->
                                 <Border x:Name="Border" Background="Transparent" BorderBrush="Transparent" 
-                                        BorderThickness="1" SnapsToDevicePixels="False">
+                                        BorderThickness="1,1,1,0" SnapsToDevicePixels="False">
                                     <Grid x:Name="Grid">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition x:Name="Col0" MinWidth="17" Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
@@ -628,7 +628,7 @@
                                         <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                                         <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed" />
                                         <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
-                                        <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1,1,1,1"/>
+                                        <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1"/>
                                         <Setter TargetName="TransitionBorder" Property="Width" Value="{Binding ActualWidth, ElementName=Grid}"/>
                                     </Trigger>
                                     <Trigger Property="Role" Value="TopLevelItem">
@@ -699,7 +699,6 @@
                                         </MultiTrigger.Conditions>
                                         <Setter TargetName="Border" Property="Background" Value="#1B1B1C"/>
                                         <Setter TargetName="Border" Property="BorderBrush" Value="#333337"/>
-                                        <Setter TargetName="Border" Property="BorderThickness" Value="1"/>
                                     </MultiTrigger>
                                     <Trigger Property="IsSuspendingPopupAnimation" Value="true">
                                         <Setter TargetName="SubMenuPopup" Property="PopupAnimation" Value="None"/>
