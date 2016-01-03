@@ -555,11 +555,11 @@
         <Style x:Key="{x:Type Menu}" TargetType="{x:Type Menu}">
             <Style.Resources>
                 <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
-                    <Setter Property="Height" Value="1"/>
+                    <Setter Property="Height" Value="3"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Separator">
-                                <Border BorderBrush="#333337" BorderThickness="1" Margin="25,0,0,0"/>
+                                <Border BorderBrush="#333337" BorderThickness="0,1,0,0" Margin="25,1,1,1"/>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -593,17 +593,18 @@
                                         </Grid>
                                         <Popup IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" 
                                                Placement="Right" HorizontalOffset="-1" x:Name="SubMenuPopup" Focusable="false"
-                                               PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
+                                               PopupAnimation="None"
                                                AllowsTransparency="True">
                                             <Grid Margin="0">
                                                 <!--Border 2-->
                                                 <Border x:Name="SubMenuBorder" 
-                                                    BorderBrush="#333337"
-                                                    BorderThickness="1" Background="#1B1B1C" 
-                                                    SnapsToDevicePixels="True">
-                                                    <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True">
+                                                        BorderBrush="#333337"
+                                                        BorderThickness="1" Background="#1B1B1C" 
+                                                        SnapsToDevicePixels="True">
+                                                    <Grid x:Name="SubMenu" Grid.IsSharedSizeScope="True"
+                                                          Margin="1,1,1,2">
                                                         <StackPanel IsItemsHost="True" 
-                                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                                                                    KeyboardNavigation.DirectionalNavigation="Cycle"/>
                                                     </Grid>
                                                     <Border.Effect>
                                                         <DropShadowEffect ShadowDepth="2" Color="Black"/>
@@ -611,9 +612,9 @@
                                                 </Border>
                                                 <!--Border 3-->
                                                 <Border Margin="1,0,0,0" x:Name="TransitionBorder" Width="0" Height="2" 
-                                                    VerticalAlignment="Top" HorizontalAlignment="Left" 
-                                                    Background="#1B1B1C" SnapsToDevicePixels="False"
-                                                    BorderThickness="1" BorderBrush="#1B1B1C"/>
+                                                        VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                                        Background="#1B1B1C" SnapsToDevicePixels="False"
+                                                        BorderThickness="1" BorderBrush="#1B1B1C"/>
                                             </Grid>
                                         </Popup>
                                     </Grid>
@@ -621,7 +622,8 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="Role" Value="TopLevelHeader">
                                         <Setter Property="Padding" Value="10,0"/>
-                                        <Setter Property="Height" Value="22"/>
+                                        <Setter Property="Height" Value="18"/>
+                                        <Setter Property="FontSize" Value="12"/>
                                         <Setter TargetName="SubMenuPopup" Property="Placement" Value="Bottom"/>
                                         <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
                                         <Setter TargetName="Col3" Property="Width" Value="Auto"/>
@@ -630,32 +632,33 @@
                                         <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
                                         <Setter TargetName="SubMenuBorder" Property="BorderThickness" Value="1"/>
                                         <Setter TargetName="TransitionBorder" Property="Width" Value="{Binding ActualWidth, ElementName=Grid}"/>
+                                        <Setter TargetName="SubMenuPopup" Property="PopupAnimation" Value="Slide"/>
                                     </Trigger>
                                     <Trigger Property="Role" Value="TopLevelItem">
                                         <Setter Property="Padding" Value="10,0"/>
-                                        <Setter Property="Height" Value="22"/>
+                                        <Setter Property="Height" Value="18"/>
                                         <Setter TargetName="Col0" Property="MinWidth" Value="0"/>
                                         <Setter TargetName="Col3" Property="Width" Value="Auto"/>
                                         <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
                                         <Setter TargetName="IGTHost" Property="Visibility" Value="Collapsed"/>
                                         <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
                                     </Trigger>
+                                    <!-- 存在子菜单的父菜单项 -->
                                     <Trigger Property="Role" Value="SubmenuHeader">
-                                        <Setter Property="Height" Value="25"/>
-                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="Padding" Value="10,0"/>
+                                        <Setter Property="Height" Value="23"/>
+                                        <Setter Property="FontSize" Value="12"/>
                                         <Setter Property="FontWeight" Value="Light"/>
                                         <Setter Property="DockPanel.Dock" Value="Top"/>
-                                        <Setter Property="Padding" Value="10,0"/>
-                                        <Setter TargetName="Border" Property="MinHeight" Value="22"/>
                                         <Setter TargetName="Border" Property="Background" Value="#1B1B1C"/>
                                     </Trigger>
+                                    <!-- 不存在子菜单的菜单项 -->
                                     <Trigger Property="Role" Value="SubmenuItem">
-                                        <Setter Property="Height" Value="25"/>
-                                        <Setter Property="FontSize" Value="13"/>
+                                        <Setter Property="Padding" Value="10,0"/>
+                                        <Setter Property="Height" Value="23"/>
+                                        <Setter Property="FontSize" Value="12"/>
                                         <Setter Property="FontWeight" Value="Light"/>
                                         <Setter Property="DockPanel.Dock" Value="Top"/>
-                                        <Setter Property="Padding" Value="10,0"/>
-                                        <Setter TargetName="Border" Property="MinHeight" Value="22"/>
                                         <Setter TargetName="ArrowPanel" Property="Visibility" Value="Collapsed"/>
                                         <Setter TargetName="Border" Property="Background" Value="#1B1B1C"/>
                                     </Trigger>
