@@ -25,7 +25,7 @@ namespace VsStyle.Net46
         {
             InitializeComponent();
         }
-
+        
         private void WindowBorderDragDelta(object sender, DragDeltaEventArgs e)
         {
             var source = e.Source as System.Windows.Controls.Primitives.Thumb;
@@ -306,6 +306,69 @@ namespace VsStyle.Net46
                 {
                     Data.ContentManager.Manager.SelectedTabItem = tabItem;
                 }
+            }
+        }
+
+        private void LeftDockSubviewFilter(object sender, FilterEventArgs e)
+        {
+            var subview = e.Item as Models.Subview;
+            if(subview != null)
+            {
+                e.Accepted = subview.Position == Models.DockPosition.Left;
+            }
+            else
+            {
+                e.Accepted = false;
+            }
+        }
+
+        private void MouseUpOnSubviewHeader(object sender, MouseButtonEventArgs e)
+        {
+            var subview = (sender as FrameworkElement).Tag as Models.Subview;
+            if (subview != null)
+            {
+                if (Data.ViewManager.Manager.LeftDockSubview == subview)
+                {
+                    Data.ViewManager.Manager.LeftDockSubview = null;
+                }
+                else
+                {
+                    Data.ViewManager.Manager.LeftDockSubview = subview;
+                }
+            }
+        }
+        
+        private void MainTabControlGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (Data.ViewManager.Manager.LeftDockSubview != null)
+            {
+                Data.ViewManager.Manager.LeftDockSubview = null;
+            }
+        }
+
+        private void CloseLeftDockSubviewButtonClick(object sender, RoutedEventArgs e)
+        {
+            Data.ViewManager.Manager.LeftDockSubview = null;
+        }
+
+        private void LeftDockSubviewDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            var parent = (sender as FrameworkElement).Parent as FrameworkElement;
+            if(parent != null)
+            {
+                if (parent.Width + e.HorizontalChange > parent.MaxWidth)
+                {
+                    parent.Width = parent.MaxWidth;
+                }
+                else if (parent.Width + e.HorizontalChange < parent.MinWidth)
+                {
+                    parent.Width = parent.MinWidth;
+                }
+                else
+                {
+                    parent.Width = parent.Width + e.HorizontalChange;
+                }
+                
             }
         }
     }

@@ -57,10 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\Nullable2ObjectConverter.cs" />
+    <Compile Include="Data\ViewManager.cs" />
+    <Compile Include="Models\Subview.cs" />
     <Compile Include="Temporary\Apple.xaml.cs">
       <DependentUpon>Apple.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\INotifyPropertyChangedImpl.cs" />
+    <Compile Include="Views\SolutionExplorer.xaml.cs">
+      <DependentUpon>SolutionExplorer.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +84,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Temporary\Apple.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SolutionExplorer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

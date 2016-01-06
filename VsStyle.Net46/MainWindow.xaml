@@ -97,6 +97,7 @@
                         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
                         <Setter Property="Padding" Value="1,0,0,0"/>
                         <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="FocusVisualStyle">
                             <Setter.Value>
                                 <Style>
@@ -736,6 +737,71 @@
             </Setter>
         </Style>
         
+        <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListView}">
+                        <Border x:Name="Bd" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}"
+                                Padding="0"
+                                SnapsToDevicePixels="true">
+                            <ScrollViewer Focusable="false" 
+                                          Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsGrouping" Value="true"/>
+                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="0,0,0,6"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border x:Name="Bd"
+                                            Background="Transparent"
+                                            Margin="{TemplateBinding Margin}">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <CollectionViewSource x:Key="LeftDockSubviews" 
+                              Source="{Binding Subviews, Source={x:Static data:ViewManager.Manager}}" 
+                              Filter="LeftDockSubviewFilter"/>
     </Window.Resources>
 
     <Grid>
@@ -754,7 +820,7 @@
 			  Background="#FF2D2D30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="34"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition />
                 <RowDefinition Height="22"/>
             </Grid.RowDefinitions>
@@ -799,7 +865,7 @@
 
             <!-- 菜单栏 -->
             <Grid Grid.Row="1">
-                <Menu IsMainMenu="True">
+                <Menu IsMainMenu="True" Margin="0,0,0,8">
                     <MenuItem Header="File">
                         <MenuItem Header="New">
                             <MenuItem Header="Project">
@@ -829,54 +895,118 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition />
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <ListView ItemsSource="{Binding Source={StaticResource LeftDockSubviews}}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" 
+                                      MouseUp="MouseUpOnSubviewHeader" Tag="{Binding}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6"/>
+                                        <ColumnDefinition Width="26"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Background="#FF3F3F46" x:Name="Border"></Border>
+                                    <TextBlock x:Name="Text" 
+                                                   Grid.Column="1" 
+                                                   Foreground="#FFE6E6E6" 
+                                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                   Text="{Binding Title}">
+                                        <TextBlock.LayoutTransform>
+                                            <RotateTransform Angle="90"/>
+                                        </TextBlock.LayoutTransform>
+                                    </TextBlock>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#FF007ACC"/>
+                                        <Setter TargetName="Text" Property="Foreground" Value="#FF007ACC"/>
+                                    </Trigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+                
                 <!-- 左停靠窗口 -->
-                <Border Grid.Row="0" Grid.Column="0" Width="250"
-					BorderThickness="1" BorderBrush="#FF3F3F46">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="24"/>
-                            <RowDefinition Height="24"/>
-                            <RowDefinition Height="24"/>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-
-                        <Border/>
-
-                        <Border Grid.Row="3"
-							Background="#FF252526"
-							BorderThickness="0,1,0,0" BorderBrush="#FF3F3F46">
-                            <TreeView ItemsSource="{Binding RootNodes, Source={x:Static data:SolutionExplorer.Explorer}}" 
-								BorderThickness="0" 
-								Margin="0,4,0,0"
-								HorizontalContentAlignment="Stretch">
-                                <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding ChildNodes}">
-                                        <StackPanel Height="20" Tag="{Binding}" Background="Transparent"
-											Orientation="Horizontal">
-                                            <Image Source="{Binding ImageUri}" Stretch="UniformToFill" Width="18" Height="18"/>
-                                            <TextBlock Margin="6,0,0,0" 
-												Text="{Binding Label}" VerticalAlignment="Center" FontSize="12"
-												FontWeight="Light"/>
-                                        </StackPanel>
-                                    </HierarchicalDataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
-                        </Border>
-                    </Grid>
+                <Border Grid.Row="0" Grid.Column="1">
                 </Border>
 
                 <!-- 选项卡窗体 -->
-                <Border Grid.Row="0" Grid.Column="1">
+                <Grid Grid.Row="0" Grid.Column="2">
+                    <Grid.Resources>
+                        <converters:Nullable2ObjectConverter x:Key="DockPanelOpenConverter">
+                            <converters:Nullable2ObjectConverter.ValueIfNull>
+                                <Visibility>Collapsed</Visibility>
+                            </converters:Nullable2ObjectConverter.ValueIfNull>
+                            <converters:Nullable2ObjectConverter.ValueIfNotNull>
+                                <Visibility>Visible</Visibility>
+                            </converters:Nullable2ObjectConverter.ValueIfNotNull>
+                        </converters:Nullable2ObjectConverter>
+                    </Grid.Resources>
+                    
                     <TabControl ItemsSource="{Binding TabItems, Source={x:Static data:ContentManager.Manager}}"
-						        SelectedItem="{Binding SelectedTabItem, Source={x:Static data:ContentManager.Manager}}"/>
-                </Border>
+						        SelectedItem="{Binding SelectedTabItem, Source={x:Static data:ContentManager.Manager}}"
+                                GotFocus="MainTabControlGotFocus"/>
+
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                          Width="250"
+                          DataContext="{Binding LeftDockSubview, Source={x:Static data:ViewManager.Manager}}"
+                          Visibility="{Binding Converter={StaticResource DockPanelOpenConverter}}"
+                          MinWidth="28"
+                          MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid }}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="6"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border Grid.Column="0" 
+                                BorderThickness="1" BorderBrush="#FF3F3F46"
+                                Background="#FF2D2D30">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="23"/>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Background="#FF007ACC">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Title}" Margin="4,0,6,0"
+                                           FontSize="12" FontWeight="Light" VerticalAlignment="Center" Foreground="White"/>
+
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="6,0,4,0">
+                                        <Button Style="{StaticResource TabItemButtonStyle}"
+        								    VerticalAlignment="Center" Width="18" Height="18"
+                                            Tag="{Binding}"
+                                            Click="CloseLeftDockSubviewButtonClick">
+                                            <Image Source="Assets/Images/icon.close.19x19.png" Stretch="Uniform" 
+                                               Height="13" Width="13"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <ContentControl Grid.Row="1" Content="{Binding Content}" 
+                                            VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                            </Grid>
+                        </Border>
+
+                        <Thumb Grid.Column="1" Cursor="SizeWE" DragDelta="LeftDockSubviewDragDelta"/>
+                    </Grid>
+                </Grid>
             </Grid>
 
             <!-- 状态栏 -->
