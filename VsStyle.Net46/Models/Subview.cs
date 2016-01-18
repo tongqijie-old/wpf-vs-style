@@ -34,7 +34,7 @@
         public bool AutoHide { get; set; }
         
         /// <summary>
-        /// 
+        /// 视图内容
         /// </summary>
         public ContentControl Content { get; set; }
     }

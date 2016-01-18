@@ -25,9 +25,19 @@ namespace VsStyle.Views
             InitializeComponent();
         }
 
-        private void TreeView_Loaded(object sender, RoutedEventArgs e)
+        private void TreeViewItemMouseDown(object sender, MouseButtonEventArgs e)
         {
-            System.Diagnostics.Debug.Print("tree view loaded");
+            if (e.ClickCount == 2)
+            {
+                var treeViewItem = (sender as FrameworkElement).Tag as Models.TreeViewItem;
+                if (!treeViewItem.HasChildItems)
+                {
+                    if (treeViewItem.DoubleClicked != null)
+                    {
+                        treeViewItem.DoubleClicked(treeViewItem);
+                    }
+                }
+            }
         }
     }
 }

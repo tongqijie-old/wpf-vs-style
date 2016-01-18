@@ -1,4 +1,5 @@
 ﻿<Window x:Class="VsStyle.Net46.MainWindow"
+        x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -31,202 +32,6 @@
             <GradientStop Color="{StaticResource FirstGradientStop}" Offset="{StaticResource FirstGradientOffset}"/>
             <GradientStop Color="{StaticResource SecondGradientStop}" Offset="{StaticResource SecondGradientOffset}"/>
         </LinearGradientBrush>
-
-        <!-- TreeView Style -->
-        <Style x:Key="{x:Type TreeView}" TargetType="{x:Type TreeView}">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TreeView}">
-                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false"
-        						HorizontalScrollBarVisibility="auto"
-        						VerticalScrollBarVisibility="Auto">
-                                <ScrollViewer.Template>
-                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition Height="auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" 
-        										Grid.Row="0" Grid.Column="0"
-        										CanContentScroll="{TemplateBinding CanContentScroll}" />
-
-                                            <!-- 垂直滚动条 -->
-                                            <ScrollBar x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right"
-        										Grid.Row="0" Grid.Column="1"
-        										Maximum="{TemplateBinding ScrollableHeight}"
-        										Orientation="Vertical"
-        										ViewportSize="{TemplateBinding ViewportHeight}"
-        										Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-        										Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-
-                                            <!-- 水平滚动条 -->
-                                            <ScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom"
-        										Grid.Row="1" Grid.Column="0"
-        										Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal"
-        										ViewportSize="{TemplateBinding ViewportWidth}"
-        										Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-        										Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
-
-                                            <Grid Grid.Row="1" Grid.Column="1"
-        										Background="#FF3E3E42"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </ScrollViewer.Template>
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </ScrollViewer>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                        <Setter Property="Padding" Value="1,0,0,0"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Setter Property="FocusVisualStyle">
-                            <Setter.Value>
-                                <Style>
-                                    <Setter Property="Control.Template">
-                                        <Setter.Value>
-                                            <ControlTemplate>
-                                                <Border>
-                                                    <Rectangle Margin="0,0,0,0" StrokeThickness="5" Stroke="Black" StrokeDashArray="1 2" Opacity="0" Fill="Black"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </Setter.Value>
-                        </Setter>
-                        <!--<Setter Property="IsExpanded" Value="True"/>-->
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type TreeViewItem}">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderThickness="0" Padding="{TemplateBinding Padding}">
-                                            <Border.Resources>
-                                                <converters:TreeNodeLevel2LeadingConverter x:Key="TreeNodeLevel2LeadingConverter"/>
-                                                <converters:Boolean2VisibilityConverter Inverse="True" x:Key="HideArrowConverter"/>
-                                            </Border.Resources>
-                                            <Grid Margin="{Binding Level, Converter={StaticResource TreeNodeLevel2LeadingConverter}}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto"/>
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <ToggleButton x:Name="Expander" 
-        											Visibility="{Binding IsHideArrow, Converter={StaticResource HideArrowConverter}}"
-        											ClickMode="Press" 
-        											HorizontalAlignment="Left" 
-        											IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
-                                                    <ToggleButton.Style>
-                                                        <Style TargetType="{x:Type ToggleButton}">
-                                                            <Setter Property="Focusable" Value="False"/>
-                                                            <Setter Property="Template">
-                                                                <Setter.Value>
-                                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                                                        <Border Width="12" Height="12">
-                                                                            <Path x:Name="ExpandPath"
-        																		HorizontalAlignment="Right" 
-        																		VerticalAlignment="Center" 
-        																		Fill="Transparent"
-        																		Stroke="#FFE6E6E6" 
-        																		Data="M 2 2 L 6 6 L 2 10 Z"/>
-                                                                        </Border>
-                                                                        <ControlTemplate.Triggers>
-                                                                            <MultiTrigger>
-                                                                                <MultiTrigger.Conditions>
-                                                                                    <Condition Property="IsMouseOver" Value="True"/>
-                                                                                    <Condition Property="IsChecked" Value="False"/>
-                                                                                </MultiTrigger.Conditions>
-                                                                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#FF1BBBFA"/>
-                                                                            </MultiTrigger>
-                                                                            <Trigger Property="IsChecked" Value="True">
-                                                                                <Setter Property="Data" TargetName="ExpandPath" Value="M 1 9 L 6 3 L 6 9 Z"/>
-                                                                                <Setter Property="Fill" TargetName="ExpandPath" Value="#FFE6E6E6"/>
-                                                                            </Trigger>
-                                                                            <MultiTrigger>
-                                                                                <MultiTrigger.Conditions>
-                                                                                    <Condition Property="IsMouseOver" Value="True"/>
-                                                                                    <Condition Property="IsChecked" Value="True"/>
-                                                                                </MultiTrigger.Conditions>
-                                                                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#FF1BBBFA"/>
-                                                                                <Setter Property="Fill" TargetName="ExpandPath" Value="#FF1BBBFA"/>
-                                                                            </MultiTrigger>
-
-                                                                        </ControlTemplate.Triggers>
-                                                                    </ControlTemplate>
-                                                                </Setter.Value>
-                                                            </Setter>
-                                                        </Style>
-                                                    </ToggleButton.Style>
-                                                </ToggleButton>
-                                                <ContentPresenter Grid.Column="1" Margin="13,0,0,0" x:Name="PART_Header" ContentSource="Header"
-        											HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
-                                            </Grid>
-                                        </Border>
-                                        <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"/>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsExpanded" Value="false">
-                                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
-                                        </Trigger>
-                                        <Trigger Property="HasItems" Value="false">
-                                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden"/>
-                                        </Trigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="HasHeader" Value="false"/>
-                                                <Condition Property="Width" Value="Auto"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter TargetName="PART_Header" Property="MinWidth" Value="75"/>
-                                        </MultiTrigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="HasHeader" Value="false"/>
-                                                <Condition Property="Height" Value="Auto"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter TargetName="PART_Header" Property="MinHeight" Value="19"/>
-                                        </MultiTrigger>
-                                        <Trigger Property="IsSelected" Value="true">
-                                            <Setter TargetName="Bd" Property="Background" Value="#FF3399FF"/>
-                                        </Trigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsSelected" Value="true"/>
-                                                <Condition Property="IsSelectionActive" Value="false"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter TargetName="Bd" Property="Background" Value="#FF3F3F46"/>
-                                        </MultiTrigger>
-                                        <Trigger Property="IsEnabled" Value="false">
-                                            <Setter Property="Foreground" Value="#333"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <!-- Button Style in Catption Bar -->
         <Style x:Key="CaptionBarButtonStyle" TargetType="{x:Type Button}">
@@ -418,8 +223,8 @@
             </Setter>
         </Style>
 
-        <!-- TabControl Style -->
-        <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}">
+        <!-- Central TabControl Style -->
+        <Style x:Key="CentralTabControlStyle" TargetType="{x:Type TabControl}">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -542,6 +347,76 @@
                                             <Setter TargetName="bd" Property="Background" Value="#FF007ACC"/>
                                             <Setter TargetName="dock" Property="Opacity" Value="1"/>
                                             <Setter TargetName="close" Property="Opacity" Value="1"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Subsidiary TabControl Style -->
+        <Style x:Key="SubsidiaryTabControlStyle" TargetType="{x:Type TabControl}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="content" Grid.Row="0">
+                                <ContentPresenter ContentSource="SelectedContent" x:Name="PART_SelectedContentHost"/>
+                            </Border>
+                            <Border Grid.Column="0" Grid.Row="1">
+                                <TabPanel IsItemsHost="True" />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Border x:Name="bd" Background="{TemplateBinding Background}" Height="20"
+        								    Padding="6,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <ContentPresenter Grid.Column="0" ContentSource="Header" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                                <Condition Property="IsSelected" Value="False"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="bd" Property="Background" Value="#FF1C97EA"/>
+                                            <Setter Property="Foreground" Value="#FF007ACC"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="bd" Property="Background" Value="#FF007ACC"/>
+                                        </MultiTrigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="#FF007ACC"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -737,6 +612,7 @@
             </Setter>
         </Style>
         
+        <!-- ListView Style -->
         <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -826,7 +702,7 @@
             </Grid.RowDefinitions>
 
             <!-- 标题栏 -->
-            <Grid Grid.Row="0"
+            <Grid Grid.Row="0" Background="Transparent"
 				  MouseDown="MouseDownOnCaptionBar">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -905,6 +781,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- 左停靠标题栏 -->
                 <Grid Grid.Row="0" Grid.Column="0">
                     <ListView ItemsSource="{Binding Source={StaticResource LeftDockSubviews}}">
                         <ListView.ItemTemplate>
@@ -954,7 +831,8 @@
                         </converters:Nullable2ObjectConverter>
                     </Grid.Resources>
                     
-                    <TabControl ItemsSource="{Binding TabItems, Source={x:Static data:ContentManager.Manager}}"
+                    <TabControl Style="{StaticResource CentralTabControlStyle}" 
+                                ItemsSource="{Binding TabItems, Source={x:Static data:ContentManager.Manager}}"
 						        SelectedItem="{Binding SelectedTabItem, Source={x:Static data:ContentManager.Manager}}"
                                 GotFocus="MainTabControlGotFocus"/>
 
@@ -963,7 +841,7 @@
                           DataContext="{Binding LeftDockSubview, Source={x:Static data:ViewManager.Manager}}"
                           Visibility="{Binding Converter={StaticResource DockPanelOpenConverter}}"
                           MinWidth="28"
-                          MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid }}}">
+                          MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="6"/>
@@ -978,7 +856,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <Grid Grid.Row="0" Background="#FF007ACC">
+                                <Grid Grid.Row="0" Background="#FF0D6EC8">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition />
@@ -1011,7 +889,8 @@
 
             <!-- 状态栏 -->
             <Grid Grid.Row="3" Background="{StaticResource BorderThemeColor}">
-                <TextBlock VerticalAlignment="Center" FontSize="13" Foreground="White" Margin="4,0,0,0"><Run Text="Ready"/></TextBlock>
+                <TextBlock VerticalAlignment="Center" FontSize="12" Foreground="White" Margin="4,0,0,0" 
+                           Text="{Binding Text, Source={x:Static data:StatusManager.Manager}}"></TextBlock>
             </Grid>
         </Grid>
 

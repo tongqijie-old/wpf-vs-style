@@ -57,9 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Contents\BlogEditor.xaml.cs">
+      <DependentUpon>BlogEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Contents\IContent.cs" />
+    <Compile Include="Contents\IContentContainer.cs" />
     <Compile Include="Converters\Nullable2ObjectConverter.cs" />
+    <Compile Include="Data\StatusManager.cs" />
     <Compile Include="Data\ViewManager.cs" />
     <Compile Include="Models\Subview.cs" />
+    <Compile Include="Models\TreeViewItem.cs" />
     <Compile Include="Temporary\Apple.xaml.cs">
       <DependentUpon>Apple.xaml</DependentUpon>
     </Compile>
@@ -67,6 +74,10 @@
     <Compile Include="Views\SolutionExplorer.xaml.cs">
       <DependentUpon>SolutionExplorer.xaml</DependentUpon>
     </Compile>
+    <Page Include="Contents\BlogEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

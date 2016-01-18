@@ -13,17 +13,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VsStyle.Contents;
 
 namespace VsStyle.Net46
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    partial class MainWindow : Window, Contents.IContentContainer
     {
+        public static MainWindow MainFrame { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            MainFrame = this;
         }
         
         private void WindowBorderDragDelta(object sender, DragDeltaEventArgs e)
@@ -180,11 +185,9 @@ namespace VsStyle.Net46
             }
         }
 
-        private DateTime MouseDownTimeOnTitleBar { get; set; }
-
         private void MouseDownOnCaptionBar(object sender, MouseButtonEventArgs e)
         {
-            if ((DateTime.Now - MouseDownTimeOnTitleBar) < TimeSpan.FromSeconds(0.5))
+            if (e.ClickCount == 2)
             {
                 if (WindowState == WindowState.Maximized)
                 {
@@ -195,10 +198,6 @@ namespace VsStyle.Net46
                     WindowState = WindowState.Maximized;
                 }
                 return;
-            }
-            else
-            {
-                MouseDownTimeOnTitleBar = DateTime.Now;
             }
 
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -371,5 +370,11 @@ namespace VsStyle.Net46
                 
             }
         }
+
+        void IContentContainer.SetStatusBarText(IContent sender, string text)
+        {
+            Data.StatusManager.Manager.Text = text;
+        }
+        
     }
 }

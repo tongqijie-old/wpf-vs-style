@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    public class SolutionExplorer
+    class SolutionExplorer
     {
         private static SolutionExplorer _Explorer = null;
 
@@ -14,74 +14,27 @@
                 {
                     _Explorer = new SolutionExplorer();
 
-                    var rootNode = new Models.TreeNode(null)
+                    var node_0 = new Models.TreeViewItem(1, "/Assets/Images/icon.solution.dark.png", "Utility");
+                    
+                    var node_0_1 = new Models.TreeViewItem(2, "/Assets/Images/icon.properties.dark.png", "Editor", node_0)
                     {
-                        Label = "Solution 'wpf-vs-style'(1 project)",
-                        IsHideArrow = true,
-                        ImageUri = "/Assets/Images/icon.solution.dark.png",
-                    };
-                    _Explorer.RootNodes.Add(rootNode);
-
-                    var node1 = new Models.TreeNode(rootNode)
-                    {
-                        Label = "VsStyle.Net46",
-                        ImageUri = "/Assets/Images/icon.project.dark.png",
-                    };
-                    rootNode.ChildNodes.Add(node1);
-
-                    var node1_1 = new Models.TreeNode(node1)
-                    {
-                        Label = "Properties",
-                        ImageUri = "/Assets/Images/icon.properties.dark.png",
+                        DoubleClicked = (sender) =>
+                        {
+                            ContentManager.Manager.AppendTabItem(new Models.TabItem(sender.Id, sender.Label, new Contents.BlogEditor(Net46.MainWindow.MainFrame)));
+                        },
                     };
 
-                    var node1_2 = new Models.TreeNode(node1)
-                    {
-                        Label = "References",
-                        ImageUri = "/Assets/Images/icon.references.dark.png",
-                    };
-
-                    var node1_3 = new Models.TreeNode(node1)
-                    {
-                        Label = "Assets",
-                        ImageUri = "/Assets/Images/icon.folder.dark.png",
-                    };
-
-                    var node1_3_1 = new Models.TreeNode(node1_3)
-                    {
-                        Label = "Images",
-                        ImageUri = "/Assets/Images/icon.folder.dark.png",
-                    };
-
-                    node1_3.ChildNodes.Add(node1_3_1);
-
-                    var node1_4 = new Models.TreeNode(node1)
-                    {
-                        Label = "Converters",
-                        ImageUri = "/Assets/Images/icon.folder.dark.png",
-                    };
-
-                    var node1_5 = new Models.TreeNode(node1)
-                    {
-                        Label = "Data",
-                        ImageUri = "/Assets/Images/icon.folder.dark.png",
-                    };
-
-                    node1.ChildNodes.Add(node1_1);
-                    node1.ChildNodes.Add(node1_2);
-                    node1.ChildNodes.Add(node1_3);
-                    node1.ChildNodes.Add(node1_4);
-                    node1.ChildNodes.Add(node1_5);
+                    _Explorer.RootNodes.Add(node_0);
                 }
                 return _Explorer;
             }
         }
 
-        private System.Collections.ObjectModel.ObservableCollection<Models.TreeNode> _RootNodes = null;
+        private System.Collections.ObjectModel.ObservableCollection<Models.TreeViewItem> _RootNodes = null;
 
-        public IList<Models.TreeNode> RootNodes
+        public IList<Models.TreeViewItem> RootNodes
         {
-            get { return _RootNodes ?? (_RootNodes = new System.Collections.ObjectModel.ObservableCollection<Models.TreeNode>()); }
+            get { return _RootNodes ?? (_RootNodes = new System.Collections.ObjectModel.ObservableCollection<Models.TreeViewItem>()); }
         }
     }
 }

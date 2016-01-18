@@ -8,29 +8,18 @@
     {
         private static ContentManager _Manager = null;
 
-        public static ContentManager Manager
-        {
-            get
-            {
-                if(_Manager == null)
-                {
-                    _Manager = new ContentManager();
+        public static ContentManager Manager { get { return _Manager ?? (_Manager = new ContentManager()); } }
 
-                    _Manager.TabItems.Add(new Models.TabItem()
-                    {
-                        Id = 1,
-                        Header = "MainWindow.xaml.cs",
-                        Content = new Temporary.Apple("MainWindow.xaml.cs"),
-                    });
-                    _Manager.TabItems.Add(new Models.TabItem()
-                    {
-                        Id = 2,
-                        Header = "MainWindow.xaml",
-                        Content = new Temporary.Apple("MainWindow.xaml"),
-                    });
-                }
-                return _Manager;
+        public Models.TabItem AppendTabItem(Models.TabItem appendedTabItem)
+        {
+            var existedTabItem = TabItems.FirstOrDefault(x => x.Id == appendedTabItem.Id);
+            if (existedTabItem == null)
+            {
+                existedTabItem = appendedTabItem;
+                TabItems.Add(existedTabItem);
             }
+            SelectedTabItem = existedTabItem;
+            return existedTabItem;
         }
 
         private ObservableCollection<Models.TabItem> _TabItems = null;
@@ -59,11 +48,17 @@
                 var unpinnedTabItem = TabItems.FirstOrDefault(x => !x.IsPinned);
                 if(unpinnedTabItem != null)
                 {
+                    var selected = SelectedTabItem == tabItem;
+
                     var index = TabItems.IndexOf(unpinnedTabItem);
 
                     tabItem.IsPinned = true;
                     TabItems.Remove(tabItem);
                     TabItems.Insert(index, tabItem);
+                    if (selected)
+                    {
+                        SelectedTabItem = tabItem;
+                    }
                 }
             }
         }
@@ -73,6 +68,9 @@
             if (tabItem.IsPinned)
             {
                 var unpinnedTabItem = TabItems.FirstOrDefault(x => !x.IsPinned);
+
+                var selected = SelectedTabItem == tabItem;
+
                 if (unpinnedTabItem != null)
                 {
                     var index = TabItems.IndexOf(unpinnedTabItem);
@@ -85,6 +83,11 @@
                     tabItem.IsPinned = false;
                     TabItems.Remove(tabItem);
                     TabItems.Insert(TabItems.Count, tabItem);
+                }
+
+                if (selected)
+                {
+                    SelectedTabItem = tabItem;
                 }
             }
         }

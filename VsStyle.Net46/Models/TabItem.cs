@@ -1,12 +1,21 @@
 ﻿namespace VsStyle.Models
 {
     using System.ComponentModel;
+    using System.Windows.Controls;
 
     class TabItem : System.Windows.Controls.TabItem, INotifyPropertyChanged
     {
         public TabItem()
         {
             DataContext = this;
+        }
+
+        public TabItem(int id, string header, ContentControl content)
+            : this()
+        {
+            Id = id;
+            Header = header;
+            Content = content;
         }
 
         /// <summary>
